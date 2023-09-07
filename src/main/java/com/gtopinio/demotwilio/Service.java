@@ -1,18 +1,19 @@
 package com.gtopinio.demotwilio;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @org.springframework.stereotype.Service
 public class Service {
 
-    private final TwilioSmsSender twilioSmsSender;
+    private final SmsSender smsSender;
 
     @Autowired
-    public Service(TwilioSmsSender twilioSmsSender) {
-        this.twilioSmsSender = twilioSmsSender;
+    public Service(@Qualifier("twilio") TwilioSmsSender twilioSmsSender) {
+        this.smsSender = twilioSmsSender;
     }
 
     public void sendSms(SmsRequest smsRequest) {
-        twilioSmsSender.sendSms(smsRequest);
+        smsSender.sendSms(smsRequest);
     }
 }
