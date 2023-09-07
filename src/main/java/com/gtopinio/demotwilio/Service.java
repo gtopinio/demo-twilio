@@ -13,7 +13,7 @@ public class Service {
         this.smsSender = twilioSmsSender;
     }
 
-    public void sendSms(SmsRequest smsRequest) {
-        smsSender.sendSms(smsRequest);
+    public Boolean sendSms(SmsRequest smsRequest) {
+        return smsSender.sendSms(smsRequest);
     }
 }

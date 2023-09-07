@@ -19,7 +19,7 @@ public class TwilioSmsSender implements SmsSender {
     }
 
     @Override
-    public void sendSms(SmsRequest smsRequest) {
+    public Boolean sendSms(SmsRequest smsRequest) {
         if (isPhoneNumberValid(smsRequest.getPhoneNumber())) {
             PhoneNumber to = new PhoneNumber(smsRequest.getPhoneNumber());
             PhoneNumber from = new PhoneNumber(twilioConfiguration.getFromNumber());
@@ -30,15 +30,16 @@ public class TwilioSmsSender implements SmsSender {
                     message
             ).create();
             LOGGER.info("Send sms: {}", smsRequest);
+            return true;
         } else {
-            throw new IllegalArgumentException(
-                    "Phone number [" + smsRequest.getPhoneNumber() + "] is not a valid number"
-            );
+            LOGGER.error("Phone number {} is not valid", smsRequest.getPhoneNumber());
+            return false;
         }
     }
 
     private Boolean isPhoneNumberValid(String phoneNumber) {
-        return phoneNumber.startsWith("09") && phoneNumber.length() == 11;
+        // Valid phone number in the Philippines starts with +639 followed by 9 digits.
+        return phoneNumber.startsWith("+639") && phoneNumber.length() == 13;
     }
 
 }
